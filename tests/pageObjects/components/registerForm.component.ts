@@ -45,13 +45,16 @@ export class RegisterFormComponent {
         await this.usernameInput.fill(user.username);
         await this.passwordInput.fill(user.password);
         await this.confirmPasswordInput.fill(user.password);
-        let response;
-        await Promise.all([
-            response = page.waitForResponse("https://parabank.parasoft.com/parabank/register.htm"),
+        // forces the response to be awaited with the register button clickç
+        // otherwise one command would block the other one
+        const [response] = await Promise.all([
+            page.waitForResponse("https://parabank.parasoft.com/parabank/register.htm"),
             this.registerButton.click(),
         ]);
         expect(response.status()).toBe(200);
+        const text = await response.text();
+        expect(text).toContain(`Welcome ${user.username}`);
+        expect(text).toContain('Your account was created successfully. You are now logged in.');
     };
-
-    
+   
 }

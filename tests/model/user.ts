@@ -27,7 +27,7 @@ export function createUser() : User {
                     .slice(0, 1)
                     .toLowerCase() + 
                     faker.person.lastName() + 
-                    faker.number.int({ min: 100, max: 999 }),
+                    faker.number.int({ min: 1000, max: 9999 }),
         password: faker.internet.password()
     }
     return user;
