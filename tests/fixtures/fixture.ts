@@ -7,7 +7,6 @@ import { createUser, User } from '../model/user'
 export type TestOptions = {
     pageManager: PageManager|PageManagerMobile;
     user: User;
-    toastDetails: ToastDetails;
 }
 
 export const test = base.extend<TestOptions>({
