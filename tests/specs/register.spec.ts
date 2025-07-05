@@ -18,12 +18,12 @@ test.afterEach(async ({ page }) => {
     await page.waitForTimeout(5000);
 });
 
-test('Register form', async ({ pageManager, page }) => {
-    await pageManager.onRegisterComponent().fillForm(staticUser);
+test('Register and check credentials', async ({ pageManager, page }) => {
+    // includes API response validation
+    await pageManager.onRegisterComponent().register(staticUser, page);
     await pageManager.onLoggedInHomeComponent().logOut();
     await pageManager.onHomeComponent().logIn(staticUser);
     await expect(pageManager.onLoggedInHomeComponent().logOutLink).toBeVisible();
     await expect(page).toHaveURL("https://parabank.parasoft.com/parabank/overview.htm");
-
 });
 

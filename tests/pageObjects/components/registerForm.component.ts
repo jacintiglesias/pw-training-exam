@@ -1,4 +1,5 @@
 import { Locator, Page } from "playwright";
+import { expect } from "@playwright/test";
 import { User } from "../../model/user";
 
 export class RegisterFormComponent {
@@ -32,7 +33,7 @@ export class RegisterFormComponent {
         this.registerButton = page.locator('[value="Register"]');
     }   
 
-    async fillForm(user: User){
+    async register(user: User, page: Page) {
         await this.firstNameInput.fill(user.firstName);
         await this.lastNameInput.fill(user.lastName);
         await this.addressInput.fill(user.address);
@@ -44,7 +45,12 @@ export class RegisterFormComponent {
         await this.usernameInput.fill(user.username);
         await this.passwordInput.fill(user.password);
         await this.confirmPasswordInput.fill(user.password);
-        await this.registerButton.click();
+        let response;
+        await Promise.all([
+            response = page.waitForResponse("https://parabank.parasoft.com/parabank/register.htm"),
+            this.registerButton.click(),
+        ]);
+        expect(response.status()).toBe(200);
     };
 
     
